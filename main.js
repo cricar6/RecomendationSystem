@@ -46,40 +46,22 @@ Papa.parse(fileInput, {
 });
 
 
-function Person(name, data) {
 
-    this.name = name;
-    this.data = data;
+dataCSV.forEach(element => {
+    var cosito = [];
+    cosito.push(element[0]);
 
-    for (let index = 1; index < data.length; index++) {
-        let e = data[index];
+    element.shift();
 
-        e = parseInt(e);
-
-        this.data.push(e);
-    }
-
-}
-
-function createPerson() {
-    dataCSV.forEach(element => {
-
-
-        let nameTemp = element[0];
-        let dataTemp = [];
-
-        dataTemp.push(element);
-        console.log(dataTemp);
-
-        let per = new Person(nameTemp, dataTemp)
-        
-        personArray.push(per);
+    element.forEach(elemento => {
+        elementoInt = parseInt(elemento);
+        cosito.push(elementoInt);
 
     });
 
+    personArray.push(cosito);
 
 
-    console.log(personArray);
-}
+});
 
-createPerson();
+console.log(personArray);

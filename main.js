@@ -41,7 +41,7 @@ Papa.parse(fileInput, {
     transform: undefined,
     complete: function (data) {
         dataCSV = data.data;
-        console.log(dataCSV)
+        console.log(dataCSV, "this is the data obtained")
     }
 });
 
@@ -60,8 +60,79 @@ dataCSV.forEach(element => {
     });
 
     personArray.push(cosito);
+});
 
+console.log(personArray, "the first person array");
+
+localStorage.setItem("personArrayBackup", JSON.stringify(personArray));
+
+personArray.forEach(element => {
+    element.shift();
+});
+
+function cosSim(array, array0) {
+
+    let aibiArray = [];
+    let aPotenciedArray = [];
+    let bPotenciedArray = [];
+
+    for (let index = 0; index < array.length; index++) {
+        const a = array[index];
+        const b = array0[index];
+
+        aibiArray.push(a * b);
+        aPotenciedArray.push(Math.pow(a, 2));
+        bPotenciedArray.push(Math.pow(b, 2));
+    }
+
+
+    let aibi = aibiArray.reduce((a, b) => a + b, 0);
+    let aPotencied = aPotenciedArray.reduce((a, b) => a + b, 0);
+    let bPotencied = bPotenciedArray.reduce((a, b) => a + b, 0);
+
+    return aibi / ((Math.sqrt(aPotencied)) * (Math.sqrt(bPotencied)));
+}
+
+function getPizzaHood(arrayPerson, personArray, pizzaBros) {
+
+    let personCosSimilars = [];
+
+    personArray.forEach(element => {
+        personCosSimilars.push(cosSim(element, arrayPerson));
+    });
+
+    localStorage.setItem("personSimsBackup", JSON.stringify(personCosSimilars));
+
+    personCosSimilars.sort();
+
+    while (personCosSimilars.length != pizzaBros + 1) {
+        personCosSimilars.shift();
+    }
+
+    let personSimsBackup = JSON.parse(localStorage.getItem("personSimsBackup"));
+    let personArrayBackup = JSON.parse(localStorage.getItem("personArrayBackup"));
+
+    let pizzaHood = [];
+
+    personCosSimilars.forEach(element => {
+        let index = personSimsBackup.indexOf(element);
+        pizzaHood.push(personArrayBackup[index]);
+    });
+
+    return [pizzaHood, personCosSimilars];
+}
+
+
+let everyPizzaHood = [];
+
+personArray.forEach(element => {
+    let persona = {
+        pizzaBros: getPizzaHood(element, personArray, 4)[0],
+        pizzaSims: getPizzaHood(element, personArray, 4)[1],
+    };
+
+    everyPizzaHood.push (persona);
 
 });
 
-console.log(personArray);
+console.log (everyPizzaHood);

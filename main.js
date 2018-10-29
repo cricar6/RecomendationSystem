@@ -129,10 +129,39 @@ personArray.forEach(element => {
     let persona = {
         pizzaBros: getPizzaHood(element, personArray, 4)[0],
         pizzaSims: getPizzaHood(element, personArray, 4)[1],
+        pizzaIngredients: []
     };
 
     everyPizzaHood.push (persona);
 
 });
+
+console.log (everyPizzaHood);
+
+everyPizzaHood.forEach(element => {
+    let ingredients = [];
+    for (let i = 0; i < element.pizzaBros[0].length; i++) {
+        let ingredientArray = [];
+        for (let j = 0; j < element.pizzaBros.length; j++) {
+            let ingredientVal = element.pizzaBros[j][i];
+            ingredientArray.push(ingredientVal);
+        }
+
+        let ingredientSum = ingredientArray.reduce((a, b) => a + b, 0);
+        ingredients.push(ingredientSum);
+        element.pizzaIngredients = ingredients;
+    }
+});
+
+everyPizzaHood.forEach(element => {
+    element.pizzaIngredients.shift();
+    let testArray = [];
+    testArray = element.pizzaIngredients.map(ingredient => {
+
+        return ingredient/25;
+    });
+    console.log(testArray);
+});
+
 
 console.log (everyPizzaHood);
